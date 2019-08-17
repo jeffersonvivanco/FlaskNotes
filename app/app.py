@@ -22,4 +22,5 @@ def home(username):
     return render_template('home.html', username=username)
 
 
-app.run()
+if __name__ == '__main__':
+    app.run()

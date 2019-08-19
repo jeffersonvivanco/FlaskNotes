@@ -14,7 +14,8 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 
 @app.route('/')
 def hello_world():
-    return render_template('index.html', name='Jeff')
+    images = s3_client.list_objects_v2(Bucket=bucket_name)
+    return render_template('index.html', name='Jeff', images=images['Contents'])
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -38,9 +39,22 @@ def upload_image():
     return 'done!'
 
 
+@app.route('/upload-image/<username>', methods=['POST'])
+def upload_image_to_username(username):
+    f = request.files['image-file']
+    s3_client.put_object(Body=f, Bucket=bucket_name, ContentType=f.content_type, Key=username + '/' + f.filename)
+    return 'done!'
+
+
 @app.route('/get-images')
 def get_images():
     images = s3_client.list_objects_v2(Bucket=bucket_name)
+    return images
+
+
+@app.route('/get-images/<username>')
+def get_images_for_username(username):
+    images = s3_client.list_objects_v2(Bucket=bucket_name, Delimiter=username)
     return images
 
 

@@ -34,13 +34,15 @@
             </div>
             <br>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" onclick="uploadImage()">Button</button>
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" onclick="uploadImage()">Upload!</button>
             </div>
         </div>
 
     </article>
     <article class="pictures">
-        <img src="https://mypicturesbucket2020.s3.us-east-2.amazonaws.com/coffee-cup-working-happy.jpg"/>
+        {% for pic in images %}
+        <img src="https://mypicturesbucket2020.s3.us-east-2.amazonaws.com/{{pic.Key}}"/>
+        {% endfor %}
     </article>
 
 </section>
@@ -50,7 +52,7 @@
         const formData = new FormData();
         formData.append('image-file', imgFile, imgFile.name);
         console.log(imgFile);
-        fetch('/upload-image', {method: 'POST', body:formData}).then(resp => {
+        fetch('/upload-image/jeffv', {method: 'POST', body:formData}).then(resp => {
            console.log(resp);
         });
     }

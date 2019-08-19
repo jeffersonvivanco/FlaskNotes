@@ -26,8 +26,34 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="image-file" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+            </div>
+            <br>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" onclick="uploadImage()">Button</button>
+            </div>
+        </div>
+
+    </article>
+    <article class="pictures">
+        <img src="https://mypicturesbucket2020.s3.us-east-2.amazonaws.com/coffee-cup-working-happy.jpg"/>
     </article>
 
 </section>
+<script>
+    function uploadImage() {
+        let imgFile = document.getElementById('inputGroupFile04').files[0];
+        const formData = new FormData();
+        formData.append('image-file', imgFile, imgFile.name);
+        console.log(imgFile);
+        fetch('/upload-image', {method: 'POST', body:formData}).then(resp => {
+           console.log(resp);
+        });
+    }
+</script>
 </body>
 </html>
